@@ -24,7 +24,7 @@ exports.auth = functions.https.onRequest(async (req, res) => {
     if (!code) {
         return res.status(400).send('No code provided');
     }
-  
+
     try {
         const tokenParams = new URLSearchParams({
             client_id: clientID,
@@ -33,43 +33,44 @@ exports.auth = functions.https.onRequest(async (req, res) => {
             grant_type: 'authorization_code',
             redirect_uri: REDIRECT_URI
         }).toString();
-  
+
         const tokenResponse = await axios.post('https://discord.com/api/oauth2/token', tokenParams, {
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
         });
-  
+
         const userResponse = await axios.get('https://discord.com/api/users/@me', {
             headers: {
                 Authorization: `Bearer ${tokenResponse.data.access_token}`
             }
         });
-  
+
         // Check if user exists, if not, create a new one
         const userRecord = await admin.auth().getUserByEmail(userResponse.data.email).catch(async () => {
-          return await admin.auth().createUser({
-              uid: `discord:${userResponse.data.id}`,
-              email: userResponse.data.email,
-              displayName: userResponse.data.username,
-              photoURL: userResponse.data.avatar ? `https://cdn.discordapp.com/avatars/${userResponse.data.id}/${userResponse.data.avatar}.png` : undefined,
-              emailVerified: userResponse.data.verified
-          });
+            return await admin.auth().createUser({
+                uid: `discord:${userResponse.data.id}`,
+                email: userResponse.data.email,
+                displayName: userResponse.data.username,
+                photoURL: userResponse.data.avatar ? `https://cdn.discordapp.com/avatars/${userResponse.data.id}/${userResponse.data.avatar}.png` : undefined,
+                emailVerified: userResponse.data.verified
+            });
         });
-  
+
         const db = admin.firestore();
-        db.settings({ ignoreUndefinedProperties: true });
         await db.collection('users').doc(userRecord.uid).set({
             discordId: userResponse.data.id,
             username: userResponse.data.username,
             avatar: userResponse.data.avatar,
             discriminator: userResponse.data.discriminator,
-            joinedServers: userResponse.data.guilds || []  // Handle undefined guilds
+            joinedServers: userResponse.data.guilds || []
         }, { merge: true });
-  
-        res.redirect('https://htmx-app.web.app');
+
+        // Generate a Firebase custom authentication token
+        const firebaseToken = await admin.auth().createCustomToken(userRecord.uid);
+        res.redirect(`https://htmx-app.web.app?token=${encodeURIComponent(firebaseToken)}`);
     } catch (error) {
         console.error('Authentication error:', error);
         res.status(500).send('Error during authentication process: ' + error.message);
     }
-  });
+});

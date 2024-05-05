@@ -21,8 +21,9 @@ const Header = () => {
     prevScrollpos = currentScrollPos;
   }
 
-  const handleTouch = () => {
+  const handleClick = () => {
     if (auth.currentUser !== null) setShowDropdown(!showDropdown);
+    console.log(JSON.stringify(auth.currentUser));
   };
 
   const handleLogout = () => {
@@ -47,7 +48,7 @@ const Header = () => {
         icon={mouseOver ? personCircleOutline : personCircle} 
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
-        onClick={handleTouch} 
+        onClick={handleClick} 
       />
       )}
     </div>

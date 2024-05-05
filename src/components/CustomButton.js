@@ -1,7 +1,11 @@
 import React from 'react';
+import { useState } from 'react';
 
 export const SignInButton = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
   const handleClick = () => {
+    setIsLoading(true);
     const loginUrl = 'https://us-central1-htmx-app.cloudfunctions.net/login';
     window.location.href = loginUrl;
   };
@@ -11,7 +15,7 @@ export const SignInButton = () => {
       className={'custom-button'}
       onClick={handleClick}
     >
-      Login with Discord
+      {isLoading ? 'Logging in...' : 'Login with Discord'}
     </button>
   );
 };
