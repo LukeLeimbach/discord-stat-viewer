@@ -3,12 +3,18 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@ionic/react": "^8.1.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
+    "firebase": "^10.11.1",
+    "firebase-functions": "^5.0.1",
+    "ionicons": "^7.4.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-firebase-hooks": "^5.1.1",
     "react-scripts": "5.0.1",
+    "react-text-rotator": "^1.2.0",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
