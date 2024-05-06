@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { auth, db } from './firebase-config';
+import { auth } from './firebase-config';
 import { signInWithCustomToken, onAuthStateChanged } from 'firebase/auth';
 import './App.css';
 import Divider from './components/Divider';
@@ -18,7 +18,6 @@ function App() {
       setUser(currentUser);
       if (currentUser) {
         console.log('User is logged in:', currentUser);
-        // Optionally fetch more user data here
       }
     });
 
@@ -39,11 +38,11 @@ function App() {
 
   return (
     <div>
-      <Header />
+      <Header user={user} />
       <section className='section'>
         <RotatingText />
         {user ? (
-          <h2>Welcome {user.displayName || user.email}</h2>
+          <h2>Welcome <span>{user.displayName || user.email}</span></h2>
         ) : (
           <SignInButton />
         )}
@@ -52,7 +51,7 @@ function App() {
       {user && (
         <>
           <Divider />
-          <CardList friends={friends} />
+          <CardList friends={user} />
         </>
       )}
     </div>
