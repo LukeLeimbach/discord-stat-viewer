@@ -40,7 +40,7 @@ const Header = ({ user }) => {
 
   return (
     <div className="header" id='header'>
-      <h1>HTMX Project</h1>
+      <h1>NOT HTMX Project (really no HTMX here)</h1>
       {showDropdown 
       ? (
         <SignOutButton isLoading={isLoading} handleLogout={handleLogout} />

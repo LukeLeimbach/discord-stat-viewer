@@ -20,7 +20,7 @@ const CardList = ({ friends }) => {
   return (
     <>
       <section className="bg-gradient">
-        <h1 className='subheading'>Your friends (This doesn't work due to auth stuff)</h1>
+        <h1 className='subheading'>Your friends (I don't access your friends)</h1>
         <section className="card-list">
           {/* {friends.map((friend) => {
             let index = 0;

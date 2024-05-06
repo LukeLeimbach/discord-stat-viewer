@@ -68,8 +68,8 @@ exports.auth = functions.https.onRequest(async (req, res) => {
 
         // Generate a Firebase custom authentication token
         const firebaseToken = await admin.auth().createCustomToken(userRecord.uid);
-        // res.redirect(`https://htmx-app.web.app?token=${encodeURIComponent(firebaseToken)}`);
-        res.redirect(`http://localhost:3000?token=${encodeURIComponent(firebaseToken)}`);
+        res.redirect(`https://htmx-app.web.app?token=${encodeURIComponent(firebaseToken)}`);
+        // res.redirect(`http://localhost:3000?token=${encodeURIComponent(firebaseToken)}`);
     } catch (error) {
         console.error('Authentication error:', error);
         res.status(500).send('Error during authentication process: ' + error.message);
